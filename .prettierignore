@@ -1,0 +1,5 @@
+.circleci/
+node_modules/
+terraform/
+dist/
+README.md

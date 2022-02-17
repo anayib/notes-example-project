@@ -1,0 +1,8 @@
+node_modules/**/*.js
+**/*.test.js
+node_modules/ipaddr.js
+migrations/*.js
+public/
+test/
+services/configTestService.js
+services/configTestUser.js
