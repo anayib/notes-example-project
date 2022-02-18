@@ -2,11 +2,16 @@
   "name": "notes-example-project",
   "version": "1.0.0",
   "description": "API designed under the folder by feature structure. For academic purpose. ",
-  "main": "server.js",
+  "main": "app.js",
   "author": "Nayib Abdala",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./bin/server",
     "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
   }
 }
