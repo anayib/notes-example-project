@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict'
 
+reequire("dotenv").config();
+
 const app = require('../app');
 const http = require('http');
 
