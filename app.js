@@ -1,5 +1,17 @@
 'use strict'
 
+const path = require('path');
+
+// set environment variables from .env.xxx file depending on NODE_ENV variable
+require('dotenv').config({
+  path: path.resolve(
+    process.cwd(),
+    process.env.NODE_ENV !== "production"
+      ? `.env.${process.env.NODE_ENV}`
+      : `.env`
+  ),
+});
+
 const express = require('express');
 const expressConfig =  require('./config/express.js')
 const app = express();

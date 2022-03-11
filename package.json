@@ -6,8 +6,11 @@
   "author": "Nayib Abdala",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/server",
-    "dev": "nodemon ./bin/server"
+    "start": "NODE_ENV=production node ./bin/server",
+    "dev": "NODE_ENV=development nodemon ./bin/server",
+    "test": "NODE_ENV=test jest ./api --detectOpenHandles --forceExit",
+    "test:watch": "yarn test --watchAll",
+    "test:coverage": "yarn test:watch --coverage"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,6 +20,8 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
   }
 }
