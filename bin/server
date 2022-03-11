@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 
-require("dotenv").config();
-const dataBaseConnection = require('../config/database');
+const { dataBaseConnection } = require('../config/database');
 
 const app = require('../app');
 const http = require('http');
