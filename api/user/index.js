@@ -1,8 +1,9 @@
 'use strict'
 const { Router } = require("express");
 const router = Router();
-const { userSignInHandler, userSignUpHandler } = require("./user.controller");
+const { signUpUserHandler, getUserByIdHandler } = require("./user.controller");
 
-router.post('/',userSignUpHandler);
+router.post('/', signUpUserHandler);
+router.get('/:id', getUserByIdHandler);
 
 module.exports = router;
