@@ -5,7 +5,7 @@ async function getUserById(id) {
   return user;
 };
 
-async function getUserByEmail({ email }) {
+async function getUserByEmail( email ) {
   const user = await User.findOne({email});
   return user;
 };

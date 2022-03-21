@@ -1,17 +1,15 @@
 const { signUpUser, getUserById, getUserByEmail } = require("./user.service");
-const  { signToken } = require('../../auth/local/auth.service');
+const  { signToken } = require('../../auth/auth.service');
 
 /**
  * Creates a new user in the database. If the user already exists returns an error, otherwise it creates it and returns a token for future requests
- * @param {object} request and response objects
  */
 async function signUpUserHandler(req, res) {
   try {
     const newUser = req.body;
-    const currentUser = await getUserByEmail(newUser);
+    const currentUser = await getUserByEmail(newUser.email);
     // validate if user exists
     if (currentUser) {
-      console.log("user already exists");
       throw new Error("Can't create a user with this email");
     };
     // encrypt the user password is done in the model
