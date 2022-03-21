@@ -64,4 +64,10 @@ userScheme.pre('save', async function () {
 
 });
 
+userScheme.methods.checkPassword = async function(requestPassword) {
+  const user = this;
+
+  return await bcrypt.compare(requestPassword, user.password);
+};
+
 module.exports = model('User', userScheme);
