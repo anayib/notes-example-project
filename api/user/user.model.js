@@ -1,6 +1,7 @@
 'use strict'
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 const userScheme = new Schema(
   {
@@ -34,17 +35,37 @@ const userScheme = new Schema(
     active: {
       type: Boolean,
       default: false,
-    }
+    },
+    notes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Note',
+        requred: false
+      }
+    ],
   },
   {
     timestamps: true,
   },
 );
 
+
+// trasnforms bjson data to json
+userScheme.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id
+    delete returnedObject.__v
+    delete returnedObject.password
+  }
+});
+
+
 /*
 before saving in the user model check if the password has been modified.
 If so, generate a new hashed password
 */
+
 userScheme.pre('save', async function () {
   const user = this;
 
