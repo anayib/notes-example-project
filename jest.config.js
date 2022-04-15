@@ -1,4 +1,4 @@
 module.exports = {
-  roots: ['<rootDir>/api'],
+  roots: ['<rootDir>/api', '<rootDir>/auth'],
   testEnvironment: 'node',
 }
