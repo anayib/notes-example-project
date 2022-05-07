@@ -18,17 +18,23 @@ async function isAuthenticated(req, res, next) {
    */
   try {
     const authHeader = req.headers.authorization || null;
-    const [ , token] = authHeader.split(' ');
-    const payload = await verifyToken(token);
+    if (authHeader) {
+      const [ , token] = authHeader.split(' ');
+      const payload = await verifyToken(token);
 
-    if (!payload) return res.status(401).end();
+      if (!payload) return res.status(401).end();
 
-    const user = await getUserById(payload._id);
+      const user = await getUserById(payload._id);
 
-    if (!user) return res.status(401).end();
+      if (!user) return res.status(401).end();
 
-    req.user = user;
-    next()
+      req.user = user;
+      next();
+
+      return null;
+    }
+
+    res.status(401).end();
   } catch(error) {
     return next(error)
   }

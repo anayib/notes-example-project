@@ -66,7 +66,7 @@ before saving in the user model check if the password has been modified.
 If so, generate a new hashed password
 */
 
-userScheme.pre('save', async function () {
+userScheme.pre('save', async function (next) {
   const user = this;
 
   try {

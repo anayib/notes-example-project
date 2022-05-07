@@ -44,21 +44,21 @@ async function getNoteHandler (req, res) {
 
 async function createNoteHandler (req, res) {
   try {
-    const newNote = { ...req.body };
+    const newNote = { ...req.body, userId: req.user._id };
     const note = await createNote(newNote);
 
     return res.status(201).json(note);
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.stack });
   }
 };
 
 async function updateNoteHandler (req, res) {
   const { id } = req.params;
   const { body } = req;
-
+  const userId = req.user._id;
   try {
-    const note = await updateNote(id, body);
+    const note = await updateNote(id, userId, body);
 
     if (!note) {
       return res.status(404).json({ message: `The note woth id ${ id } can't be updated because it does not exists`});
@@ -72,8 +72,10 @@ async function updateNoteHandler (req, res) {
 
 async function deleteNoteHandler (req, res) {
   const { id } = req.params;
+  const userId = req.user._id;
+
   try {
-    const note = await deleteNote(id);
+    const note = await deleteNote(id, userId);
 
     if (!note) {
       return res.status(404).json({ message: `Can't delete note with id: ${id} because it doesn't exist`});

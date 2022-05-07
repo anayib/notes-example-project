@@ -5,6 +5,7 @@ This file includes how to create a description per function. You can access that
 
 // require the note module
 const Note = require('./note.model');
+const User = require('../user/user.model');
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -14,6 +15,17 @@ module.exports = {
   updateNote,
   deleteNote,
 };
+
+
+/**
+ * Validates that a userId corresponds to the userId associated to a note
+ * @return true/false boolen
+ * */
+async function validUser(userId, id ) {
+  const currentNote = await Note.findById(id);
+  return userId.toString() === currentNote.userId.toString();
+}
+
 
 /**
  * Get all notes
@@ -33,6 +45,7 @@ async function getAllNotes() {
 
 async function getNote(id) {
   const note = await Note.findById(id);
+  console.log(note)
   return note;
 };
 
@@ -43,20 +56,28 @@ async function getNote(id) {
  */
 async function createNote(note) {
   // creates a Note object form Note prototype
+  const user = await User.findById(note.userId);
   const newNote = new Note(note);
   // save note to MongoDB DB
   const storedNote = await newNote.save();
+  user.notes = user.notes.concat(storedNote._id);
+  await user.save();
+
   return storedNote;
 };
 
 /**
  * Update an existing note by id
- * @param { String } id of the note to be updated if it exists
  * @param { Object } note body of the note to be updated
  * @returns the note as it was before updating it
  */
-async function updateNote(id, note) {
-  const updatedNote = await Note.findOneAndUpdate(id, note);
+async function updateNote(noteId, userId, note) {
+  if (!validUser(userId, noteId)) {
+    return new Error(`You are not allowed to edit this note`);
+  };
+
+  const updatedNote = await Note.findByIdAndUpdate(noteId, note)
+
   return updatedNote;
 };
 
@@ -65,7 +86,11 @@ async function updateNote(id, note) {
  * @param { String } id of the note to be deleted
  * @returns the deleted note
  */
-async function deleteNote(id) {
-  const deletedNote = await Note.findOneAndDelete(id);
+async function deleteNote(id, userId) {
+  if (!validUser(userId, id)) {
+    return new Error(`You are not allowed to edit this note`);
+  };
+
+  const deletedNote = await Note.findByIdAndDelete(id);
   return deletedNote;
 };
